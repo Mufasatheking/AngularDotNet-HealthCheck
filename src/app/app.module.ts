@@ -36,14 +36,16 @@ import { ConnectionServiceModule, ConnectionServiceOptions, ConnectionServiceOpt
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
-    ConnectionServiceModule
+    //ConnectionServiceModule
   ],
-  providers: [{
+  providers: [
+   /* {
     provide: ConnectionServiceOptionsToken,
     useValue: <ConnectionServiceOptions>{
       heartbeatUrl: environment.baseUrl + 'api/heartbeat',
     }
-  }],
+  }*/
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
