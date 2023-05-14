@@ -11,7 +11,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { NgModule } from '@angular/core';
-
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+import { ConnectionServiceModule, ConnectionServiceOptions, ConnectionServiceOptionsToken } from 'angular-connection-service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,9 +29,21 @@ import { NgModule } from '@angular/core';
     BrowserAnimationsModule,
     MatButtonModule,
     MatIconModule,
-    MatToolbarModule
+    MatToolbarModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the app is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
+    ConnectionServiceModule
   ],
-  providers: [],
+  providers: [{
+    provide: ConnectionServiceOptionsToken,
+    useValue: <ConnectionServiceOptions>{
+      heartbeatUrl: environment.baseUrl + 'api/heartbeat',
+    }
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
